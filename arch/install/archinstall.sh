@@ -33,9 +33,9 @@ sgdisk --zap-all /dev/$DISK
 sleep 1
 
 # Format Partitions
-EFI="/dev/${DISK}1"
-SWAP="/dev/${DISK}2"
-ROOT="/dev/${DISK}3"
+EFI="/dev/${DISK}p1"
+SWAP="/dev/${DISK}p2"
+ROOT="/dev/${DISK}p3"
 
 mkfs.fat -F 32 $EFI
 mkswap $SWAP
