@@ -79,12 +79,12 @@ mkfs.ext4 -L ARCH_ROOT "$ROOT"
 ### MOUNTING BY LABEL ###
 #########################
 
-mount -o noatime /dev/disk/by-label/ARCH_ROOT /mnt
+mount -o noatime "$ROOT" /mnt
 
 mkdir -p /mnt/boot/efi
-mount -o umask=0077 /dev/disk/by-label/ARCH_EFI /mnt/boot/efi
+mount -o umask=0077 "$EFI" /mnt/boot/efi
 
-swapon /dev/disk/by-label/ARCH_SWAP
+swapon "$SWAP"
 
 #########################
 ### MIRRORLIST SETUP  ###

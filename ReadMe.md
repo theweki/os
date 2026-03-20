@@ -2,4 +2,4 @@
 
 `iwctl --passphrase [password] station wlan0 connect [network]`
 
-`bash <(curl -s https://raw.githubusercontent.com/theweki/os/refs/heads/main/arch/install/archinstall.sh)`
+`bash <(curl -s https://raw.githubusercontent.com/theweki/os/refs/heads/main/install/archinstall.sh)`
