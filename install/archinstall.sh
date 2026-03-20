@@ -71,9 +71,9 @@ for DEV in "$EFI" "$SWAP" "$ROOT"; do
     fi
 done
 
-mkfs.fat -F 32 -n ARCH_EFI "$EFI"
-mkswap -L ARCH_SWAP "$SWAP"
-mkfs.ext4 -L ARCH_ROOT "$ROOT"
+mkfs.fat -F 32 "$EFI"
+mkswap "$SWAP"
+mkfs.ext4 "$ROOT"
 
 #########################
 ### MOUNTING BY LABEL ###
