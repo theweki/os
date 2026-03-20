@@ -148,7 +148,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 mkdir -p /mnt/archinstall
 
-curl -s -o /mnt/archinstall/config.sh https://raw.githubusercontent.com/theweki/os/refs/heads/main/arch/install/config.sh
+curl -s -o /mnt/archinstall/config.sh https://raw.githubusercontent.com/theweki/os/refs/heads/main/install/config.sh
 chmod +x /mnt/archinstall/config.sh
 
 # Chroot and Execute Post Installation Scripts
