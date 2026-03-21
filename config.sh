@@ -17,7 +17,7 @@ hwclock --systohc
 
 # Mirror Selection
 sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
-reflector --latest 20 --protocol https --connection-timeout 5 --sort rate --save /etc/pacman.d/mirrorlist
+reflector --country India,Singapore,Germany,Netherlands --latest 20 --protocol https --connection-timeout 10 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syy --noconfirm
 
 # --- Locale & Keyboard ---
