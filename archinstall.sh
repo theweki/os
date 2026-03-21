@@ -28,11 +28,11 @@ read -p "DISK   |   nvme0n1 / sda / vda :   " DISK
 sgdisk --zap-all "/dev/$DISK"
 
 {
-    echo "label: gpt"
+	echo "label: gpt"
 
-    echo "size=1G, type=U, bootable"
-    echo "size=8G, type=S"
-    echo "type=L"
+	echo "size=1G, type=U, bootable"
+	echo "size=8G, type=S"
+	echo "type=L"
 
 } | sfdisk "/dev/$DISK"
 
@@ -43,9 +43,9 @@ sleep 2
 
 # Format Partitions
 if [[ "$DISK" == nvme* || "$DISK" == mmcblk* ]]; then
-    PART_SUFFIX="p"
+	PART_SUFFIX="p"
 else
-    PART_SUFFIX=""
+	PART_SUFFIX=""
 fi
 
 EFI="/dev/${DISK}${PART_SUFFIX}1"
@@ -57,18 +57,18 @@ ROOT="/dev/${DISK}${PART_SUFFIX}3"
 ##########################
 
 for DEV in "$EFI" "$SWAP" "$ROOT"; do
-    if [ ! -b "$DEV" ]; then
-        echo "Waiting for $DEV to appear..."
-        for i in {1..10}; do
-            sleep 1
-            [ -b "$DEV" ] && break
-        done
-    fi
-    if [ ! -b "$DEV" ]; then
-        lsblk
-        echo "Error: device $DEV not found; aborting."
-        exit 1
-    fi
+	if [ ! -b "$DEV" ]; then
+		echo "Waiting for $DEV to appear..."
+		for i in {1..10}; do
+			sleep 1
+			[ -b "$DEV" ] && break
+		done
+	fi
+	if [ ! -b "$DEV" ]; then
+		lsblk
+		echo "Error: device $DEV not found; aborting."
+		exit 1
+	fi
 done
 
 mkfs.fat -F 32 "$EFI"
@@ -99,48 +99,139 @@ pacman -Syy --noconfirm
 ####################
 
 # --- Hardware Specifics ---
-INTEL_UC_PKGS=(intel-ucode)
-INTEL_GPU_PKGS=(mesa libva-utils vulkan-intel intel-media-driver libva-intel-driver)
+INTEL_UC_PKGS=(
+	intel-ucode
+)
+INTEL_GPU_PKGS=(
+	mesa
+	libva-utils
+	vulkan-intel
+	intel-media-driver
+	libva-intel-driver
+)
 
 # AMD_UC_PKGS=(amd-ucode)
 # AMD_GPU_PKGS=(mesa libva-utils libva-mesa-driver vulkan-radeon xf86-video-amdgpu xf86-video-ati)
 
 # --- Functional Groups ---
-CORE_PKGS=(base base-devel linux linux-headers grub efibootmgr)
-FIRMWARE_PKGS=(linux-firmware linux-firmware-marvell sof-firmware fwupd)
-FILESYSTEM_PKGS=(e2fsprogs dosfstools exfatprogs)
+CORE_PKGS=(
+	base
+	base-devel
+	linux
+	linux-headers
+	grub
+	efibootmgr
+)
+
+FIRMWARE_PKGS=(
+	linux-firmware
+	linux-firmware-marvell
+	sof-firmware
+	fwupd
+)
+FILESYSTEM_PKGS=(
+	e2fsprogs
+	dosfstools
+	exfatprogs
+)
 
 # Desktop Environment
 # DISPLAY_SERVER_PKGS=(xorg xorg-xinit)
-DESKTOP_PKGS=(gnome power-profiles-daemon gnome-remote-desktop gdm xdg-user-dirs)
-# gnome gnome-tweaks gnome-themes-extra power-profiles-daemon gnome-remote-desktop
+GNOME_PKGS=(
+	gdm
+	gnome-characters
+	gnome-color-manager
+	gnome-console
+	gnome-control-center
+	gnome-disk-utility
+	gnome-font-viewer
+	gnome-keyring
+	gnome-menus
+	gnome-session
+	gnome-settings-daemon
+	gnome-shell
+	gvfs
+	gvfs-mtp
+	gvfs-nfs
+	gvfs-smb
+	loupe
+	nautilus
+	snapshot
+	sushi
+	xdg-desktop-portal-gnome
+	xdg-user-dirs-gtk
+	gnome-themes-extra
+	power-profiles-daemon
+	gnome-tweaks
+)
 
-AUDIO_PKGS=(wireplumber pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack gst-plugin-pipewire)
-BT_PKGS=(bluez bluez-utils)
-NET_PKGS=(networkmanager openssh firewalld)
+AUDIO_PKGS=(
+	wireplumber
+	pipewire
+	pipewire-audio
+	pipewire-alsa
+	pipewire-pulse
+	pipewire-jack
+	gst-plugin-pipewire
+)
+BT_PKGS=(
+	bluez
+	bluez-utils
+)
+NET_PKGS=(
+	networkmanager
+	openssh
+	firewalld
+)
 
-TOOLS_PKGS=(cups usbutils thermald plocate git curl wget reflector pacman-contrib)
-FONTS_PKGS=(noto-fonts noto-fonts-extra noto-fonts-cjk noto-fonts-emoji ttf-jetbrains-mono-nerd)
-SHELL_PKGS=(bash-completion man-db man-pages zip unzip 7zip unrar vi nano)
+TOOLS_PKGS=(
+	cups
+	usbutils
+	thermald
+	plocate
+	git
+	curl
+	wget
+	reflector
+	pacman-contrib
+)
+FONTS_PKGS=(
+	noto-fonts
+	noto-fonts-extra
+	noto-fonts-cjk
+	noto-fonts-emoji
+	ttf-jetbrains-mono-nerd
+)
+SHELL_PKGS=(
+	bash-completion
+	man-db
+	man-pages
+	zip
+	unzip
+	7zip
+	unrar
+	vi
+	nano
+)
 
 PKGS=(
-    "${CORE_PKGS[@]}"
-    "${FIRMWARE_PKGS[@]}"
-    "${INTEL_UC_PKGS[@]}"
-    "${INTEL_GPU_PKGS[@]}"
-    "${FILESYSTEM_PKGS[@]}"
-    "${DESKTOP_PKGS[@]}"
-    "${AUDIO_PKGS[@]}"
-    "${BT_PKGS[@]}"
-    "${NET_PKGS[@]}"
-    "${TOOLS_PKGS[@]}"
-    "${FONTS_PKGS[@]}"
-    "${SHELL_PKGS[@]}"
+	"${CORE_PKGS[@]}"
+	"${FIRMWARE_PKGS[@]}"
+	"${INTEL_UC_PKGS[@]}"
+	"${INTEL_GPU_PKGS[@]}"
+	"${FILESYSTEM_PKGS[@]}"
+	"${GNOME_PKGS[@]}"
+	"${AUDIO_PKGS[@]}"
+	"${BT_PKGS[@]}"
+	"${NET_PKGS[@]}"
+	"${TOOLS_PKGS[@]}"
+	"${FONTS_PKGS[@]}"
+	"${SHELL_PKGS[@]}"
 )
 
 pacstrap -K /mnt "${PKGS[@]}"
 sleep 2
-genfstab -U /mnt >> /mnt/etc/fstab
+genfstab -U /mnt >>/mnt/etc/fstab
 
 #####################
 ### CONFIGURATION ###
@@ -148,7 +239,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 mkdir -p /mnt/archinstall
 
-curl -s -o /mnt/archinstall/config.sh https://raw.githubusercontent.com/theweki/os/refs/heads/main/install/config.sh
+curl -s -o /mnt/archinstall/config.sh https://raw.githubusercontent.com/theweki/os/refs/heads/main/config.sh
 chmod +x /mnt/archinstall/config.sh
 
 # Chroot and Execute Post Installation Scripts

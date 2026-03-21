@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-set -e # Exit immediately if a command exits with a non-zero status
-set -u # Treat unset variables as an error and exit immediately
+set -e          # Exit immediately if a command exits with a non-zero status
+set -u          # Treat unset variables as an error and exit immediately
 set -o pipefail # Return the exit status of the last command in the pipeline that failed
-IFS=$'\n\t' # Set the Internal Field Separator to newline and tab
+IFS=$'\n\t'     # Set the Internal Field Separator to newline and tab
 
 keyboardlayout="us"
 zoneinfo="Asia/Kolkata"
@@ -23,16 +23,16 @@ pacman -Syy --noconfirm
 # --- Locale & Keyboard ---
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
-echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-echo "KEYMAP=$keyboardlayout" >> /etc/vconsole.conf
+echo "LANG=en_US.UTF-8" >>/etc/locale.conf
+echo "KEYMAP=$keyboardlayout" >>/etc/vconsole.conf
 
 # --- Network Config ---
-echo "$hostname" > /etc/hostname
+echo "$hostname" >/etc/hostname
 {
-    echo "127.0.0.1   localhost"
-    echo "::1         localhost"
-    echo "127.0.1.1   $hostname.localdomain $hostname"
-} > /etc/hosts
+	echo "127.0.0.1   localhost"
+	echo "::1         localhost"
+	echo "127.0.1.1   $hostname.localdomain $hostname"
+} >/etc/hosts
 
 # --- Users & Permissions ---
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
