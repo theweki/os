@@ -236,6 +236,8 @@ SHELL_PKGS=(
 	unrar
 	vi
 	nano
+	btop
+	fastfetch
 )
 
 PKGS=(
