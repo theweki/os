@@ -54,7 +54,7 @@ sgdisk --zap-all "/dev/$DISK"
 	echo "size=8G, type=S"
 	echo "type=L"
 
-} | sfdisk --force "/dev/$DISK"
+} | sfdisk --force --wipe always --wipe-partitions always "/dev/$DISK"
 
 # Inform kernel of partition table changes and wait for udev to settle
 partprobe /dev/"$DISK" || true
