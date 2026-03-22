@@ -15,6 +15,26 @@ loadkeys us
 timedatectl set-timezone Asia/Kolkata
 timedatectl set-ntp true
 
+########################
+### CLEANUP & PREP   ###
+########################
+
+echo "Cleaning up existing mounts and swap..."
+
+# 1. Swap off all active swap devices
+swapoff -a || true
+
+# 2. Unmount everything under /mnt recursively
+# We use tac to unmount in reverse order (child first, then parent)
+if mountpoint -q /mnt; then
+	umount -R /mnt || true
+fi
+
+# 3. Final check: if /mnt is still busy, force it (optional/dangerous)
+# lsof /mnt | awk '{print $2}' | xargs kill -9 2>/dev/null || true
+
+echo "System cleaned. Starting installation..."
+
 #########################
 ### DISK PARTITIONING ###
 #########################
@@ -91,7 +111,8 @@ swapon "$SWAP"
 #########################
 
 sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
-reflector --country India --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+pacman -Sy archlinux-keyring --noconfirm
+reflector --country India,Singapore --latest 10 --protocol https --connection-timeout 10 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syy --noconfirm
 
 ####################
