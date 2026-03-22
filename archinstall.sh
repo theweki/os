@@ -45,16 +45,16 @@ lsblk
 read -p "DISK   |   nvme0n1 / sda / vda :   " DISK
 
 # Wipe Disk and Partition Table
+wipefs --all --force "/dev/$DISK"
 sgdisk --zap-all "/dev/$DISK"
 
 {
 	echo "label: gpt"
-
 	echo "size=1G, type=U, bootable"
 	echo "size=8G, type=S"
 	echo "type=L"
 
-} | sfdisk "/dev/$DISK"
+} | sfdisk --force "/dev/$DISK"
 
 # Inform kernel of partition table changes and wait for udev to settle
 partprobe /dev/"$DISK" || true
