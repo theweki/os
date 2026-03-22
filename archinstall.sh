@@ -182,6 +182,8 @@ GNOME_PKGS=(
 	sushi
 	xdg-desktop-portal-gnome
 	xdg-user-dirs-gtk
+	xdg-utils
+	libsecret
 	gnome-themes-extra
 	power-profiles-daemon
 	gnome-tweaks

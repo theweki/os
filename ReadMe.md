@@ -2,6 +2,4 @@
 
 `iwctl --passphrase [password] station wlan0 connect [network]`
 
-`gdisk /dev/DISK -x -z`
-
 `bash <(curl -s https://raw.githubusercontent.com/theweki/os/refs/heads/main/archinstall.sh)`
