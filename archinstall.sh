@@ -160,6 +160,7 @@ FILESYSTEM_PKGS=(
 # DISPLAY_SERVER_PKGS=(xorg xorg-xinit)
 GNOME_PKGS=(
 	gdm
+	gnome-backgrounds
 	gnome-characters
 	gnome-color-manager
 	gnome-console
