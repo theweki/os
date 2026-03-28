@@ -50,17 +50,17 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # --- Services ---
 systemctl enable NetworkManager.service
 systemctl enable bluetooth.service
-systemctl enable sshd.service
-systemctl enable firewalld.service
+systemctl enable thermald.service
+systemctl enable power-profiles-daemon.service
 
 systemctl enable paccache.timer
 systemctl enable fstrim.timer
 systemctl enable reflector.timer
 systemctl enable plocate-updatedb.timer
 
-systemctl enable cups.socket
-systemctl enable avahi-daemon.socket
+# systemctl enable sshd.service
+# systemctl enable firewalld.service
+# systemctl enable cups.socket
+# systemctl enable avahi-daemon.socket
 
-systemctl enable thermald.service
 systemctl enable gdm.service
-systemctl enable power-profiles-daemon.service
