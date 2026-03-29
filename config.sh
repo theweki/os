@@ -7,7 +7,7 @@ IFS=$'\n\t'     # Set the Internal Field Separator to newline and tab
 
 keyboardlayout="us"
 zoneinfo="Asia/Kolkata"
-hostname="archlinux"
+hostname="arch"
 username="weki"
 password="root"
 
@@ -40,10 +40,30 @@ useradd -m -G wheel $username
 echo "root:$password" | chpasswd
 echo "$username:$password" | chpasswd
 
+# Early KMS for Intel
+sed -i 's/^MODULES=()/MODULES=(i915)/' /etc/mkinitcpio.conf
+
+# zRAM Configuration (8GB Target for 16GB RAM)
+cat <<EOF >/etc/systemd/zram-generator.conf
+[zram0]
+zram-size = min(ram / 2, 8192)
+compression-algorithm = zstd
+EOF
+
+# Kernel Swappiness (Prioritize zRAM)
+cat <<EOF >/etc/sysctl.d/99-vm-zram-parameters.conf
+vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0
+vm.vfs_cache_pressure = 125
+EOF
+
 # Generate initramfs
 mkinitcpio -P
 
 # Bootloader
+sed -i 's/loglevel=3 quiet/loglevel=3 quiet vt.global_cursor_default=0/g' /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 

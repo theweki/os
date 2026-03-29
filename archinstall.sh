@@ -51,7 +51,6 @@ sgdisk --zap-all "/dev/$DISK"
 {
 	echo "label: gpt"
 	echo "size=1G, type=U, bootable"
-	echo "size=8G, type=S"
 	echo "type=L"
 
 } | sfdisk --force --wipe always --wipe-partitions always "/dev/$DISK"
@@ -69,14 +68,13 @@ else
 fi
 
 EFI="/dev/${DISK}${PART_SUFFIX}1"
-SWAP="/dev/${DISK}${PART_SUFFIX}2"
-ROOT="/dev/${DISK}${PART_SUFFIX}3"
+ROOT="/dev/${DISK}${PART_SUFFIX}2"
 
 ##########################
 ### FORMATTING & LABEL ###
 ##########################
 
-for DEV in "$EFI" "$SWAP" "$ROOT"; do
+for DEV in "$EFI" "$ROOT"; do
 	if [ ! -b "$DEV" ]; then
 		echo "Waiting for $DEV to appear..."
 		for i in {1..10}; do
@@ -92,7 +90,6 @@ for DEV in "$EFI" "$SWAP" "$ROOT"; do
 done
 
 mkfs.fat -F 32 "$EFI"
-mkswap "$SWAP"
 mkfs.ext4 "$ROOT"
 
 #########################
@@ -103,8 +100,6 @@ mount -o noatime "$ROOT" /mnt
 
 mkdir -p /mnt/boot/efi
 mount -o umask=0077 "$EFI" /mnt/boot/efi
-
-swapon "$SWAP"
 
 #########################
 ### MIRRORLIST SETUP  ###
@@ -131,6 +126,8 @@ core=(
 
 	grub
 	efibootmgr
+
+	zram-generator
 
 	pacman-contrib
 	bash-completion
@@ -267,6 +264,7 @@ PKGS=(
 pacstrap -K /mnt "${PKGS[@]}"
 sleep 2
 genfstab -U /mnt >>/mnt/etc/fstab
+# genfstab -U /mnt | grep -v "swap" >>/mnt/etc/fstab
 
 #####################
 ### CONFIGURATION ###
