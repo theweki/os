@@ -105,7 +105,6 @@ mount -o umask=0077 "$EFI" /mnt/boot/efi
 ### MIRRORLIST SETUP  ###
 #########################
 
-sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 pacman -Sy archlinux-keyring --noconfirm
 reflector --country India,Singapore --latest 10 --protocol https --connection-timeout 10 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syy --noconfirm
@@ -115,135 +114,71 @@ pacman -Syy --noconfirm
 ####################
 
 core=(
-	base
-	base-devel
-	linux
-	linux-headers
-
-	linux-firmware
-	linux-firmware-marvell
+	base base-devel
+	linux linux-headers
+	linux-firmware linux-firmware-marvell
 	sof-firmware
-
-	grub
-	efibootmgr
-
+	grub efibootmgr
 	zram-generator
-
-	pacman-contrib
-	bash-completion
-	reflector
-
-	man-db
-	man-pages
-
-	vi
-	nano
-
-	btop
-	fastfetch
-
-	git
+  pacman-contrib bash-completion reflector
+	man-db man-pages
+	vi nano btop git
 )
 
 hardware=(
 	intel-ucode
-
-	mesa
-	libva-utils
-	vulkan-intel
-	intel-media-driver
-	libva-intel-driver
-
+	mesa libva-utils
+	intel-media-driver vulkan-intel
 	thermald
+	# vpl-gpu-rt
 )
 
 filesystem=(
-	e2fsprogs
-	dosfstools
-	exfatprogs
-
-	usbutils
-	plocate
-
-	zip
-	unzip
-	7zip
-	unrar
+	e2fsprogs dosfstools exfatprogs
+	usbutils plocate
+	zip unzip 7zip unrar
 )
 
 connectivity=(
-	networkmanager
-	openssh
-
-	bluez
-	bluez-utils
-
-	curl
-	wget
+	networkmanager openssh
+	usb_modeswitch
+	bluez bluez-obex bluez-utils
+	curl wget
 )
 
 audio=(
+	pipewire pipewire-audio
 	wireplumber
-	pipewire
-	pipewire-audio
-	pipewire-alsa
-	pipewire-pulse
-	pipewire-jack
+	pipewire-alsa pipewire-pulse pipewire-jack
 	gst-plugin-pipewire
+	gst-plugins-base gst-plugins-good gst-plugins-bad gst-libav
 )
 
 fonts=(
-
-	noto-fonts
-	noto-fonts-extra
-	noto-fonts-cjk
-	noto-fonts-emoji
+	noto-fonts noto-fonts-extra noto-fonts-cjk noto-fonts-emoji
 	ttf-jetbrains-mono-nerd
 )
 
 essentials=(
 	# fwupd
 	# firewalld
-	# cups
-	# bluez-cups
-
+	# cups bluez-cups
 	udisks2
-
-	gvfs
-	gvfs-mtp
-	gvfs-gphoto2
-	gvfs-afc
-	gvfs-smb
-
-	xdg-utils
-	xdg-user-dirs-gtk
-
-	libsecret
-	gnome-keyring
-	polkit-gnome
-
+	gvfs gvfs-afc gvfs-mtp gvfs-gphoto2
+	xdg-utils xdg-user-dirs-gtk
+	polkit
+  libsecret gnome-keyring
 	power-profiles-daemon
 )
 
 gnome=(
 	gdm
-	gnome-shell
-	gnome-session
-	gnome-settings-daemon
-	gnome-control-center
-	gnome-tweaks
-	gnome-backgrounds
-	gnome-themes-extra
 	xdg-desktop-portal-gnome
-	adwaita-icon-theme
-	hicolor-icon-theme
-
-	nautilus
-	loupe
-	alacritty
-	chromium
-	mpv
-	gnome-text-editor
+	gnome-shell gnome-control-center
+	gnome-disk-utility gnome-text-editor gnome-backgrounds
+	gnome-tweaks extension-manager
+	snapshot nautilus loupe
+	ptyxis ghostty chromium mpv
 )
 
 BASE_ARCH=(

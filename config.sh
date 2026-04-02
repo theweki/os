@@ -16,7 +16,6 @@ ln -sf /usr/share/zoneinfo/$zoneinfo /etc/localtime
 hwclock --systohc
 
 # Mirror Selection
-sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 reflector --country India,Singapore --latest 10 --protocol https --connection-timeout 10 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syy --noconfirm
 
@@ -46,7 +45,7 @@ sed -i 's/^MODULES=()/MODULES=(i915)/' /etc/mkinitcpio.conf
 # zRAM Configuration (8GB Target for 16GB RAM)
 cat <<EOF >/etc/systemd/zram-generator.conf
 [zram0]
-zram-size = min(ram / 2, 8192)
+zram-size = min(ram, 16384)
 compression-algorithm = zstd
 EOF
 
