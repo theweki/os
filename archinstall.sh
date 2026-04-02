@@ -178,7 +178,7 @@ gnome=(
 	gnome-disk-utility gnome-text-editor gnome-backgrounds
 	gnome-tweaks extension-manager
 	snapshot nautilus loupe
-	ptyxis ghostty chromium mpv
+	ghostty chromium mpv
 )
 
 BASE_ARCH=(
